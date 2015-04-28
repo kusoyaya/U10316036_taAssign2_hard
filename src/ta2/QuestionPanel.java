@@ -32,7 +32,7 @@ public class QuestionPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public QuestionPanel() {
+	public void go() {
 		setMaximumSize(new Dimension(800, 500));
 		question = r.getQuestionArray("question txt/"+this.questionNumber+".txt");
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -65,9 +65,10 @@ public class QuestionPanel extends JPanel {
 				if(question.get(question.size()-1).equals("A")){
 					score += 10;
 					JOptionPane.showMessageDialog(buttonA, "正確!", "恭喜",0, null);
+				}else{
+					JOptionPane.showMessageDialog(buttonA, "正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 				}
 				jumpOrNot = true;
-				JOptionPane.showMessageDialog(buttonA, "正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 			}
 		});
 		button.add(buttonA);
@@ -76,11 +77,13 @@ public class QuestionPanel extends JPanel {
 		buttonB.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(question.get(question.size()-1).equals("B")){
-					JOptionPane.showMessageDialog(buttonA, "正確!", "恭喜",0, null);
+					JOptionPane.showMessageDialog(buttonB, "正確!", "恭喜",0, null);
 					score += 10;
+				}else{
+					
+					JOptionPane.showMessageDialog(buttonB, "正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 				}
 				jumpOrNot = true;
-				JOptionPane.showMessageDialog(buttonA, "正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 			}
 		});
 		button.add(buttonB);
@@ -89,11 +92,12 @@ public class QuestionPanel extends JPanel {
 		buttonC.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(question.get(question.size()-1).equals("C")){
-					JOptionPane.showMessageDialog(buttonA, "正確!", "恭喜",0, null);
+					JOptionPane.showMessageDialog(buttonC, "正確!", "恭喜",0, null);
 					score += 10;
+				}else{
+					JOptionPane.showMessageDialog(buttonC, "正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 				}
 				jumpOrNot = true;
-				JOptionPane.showMessageDialog(buttonA, "正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 			}
 		});
 		button.add(buttonC);
@@ -102,11 +106,12 @@ public class QuestionPanel extends JPanel {
 		buttonD.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(question.get(question.size()-1).equals("D")){
-					JOptionPane.showMessageDialog(buttonA, "正確!", "恭喜",0, null);
+					JOptionPane.showMessageDialog(buttonD, "正確!", "恭喜",0, null);
 					score += 10;
+				}else{
+					JOptionPane.showMessageDialog(buttonD,"正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 				}
 				jumpOrNot = true;
-				JOptionPane.showMessageDialog(buttonA,"正確答案是 "+question.get(question.size()-1), "錯啦",0, null);
 			}
 		});
 		button.add(buttonD);

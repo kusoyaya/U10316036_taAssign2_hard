@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -28,31 +29,49 @@ public class GUI extends JFrame implements ActionListener{
 	String userSeriel;
 	
 	int time = 11;
+	int TIMELIMIT;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void go(String userName, String userSeriel) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUI frame = new GUI(userName,userSeriel);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	
+	public static void main(String[] args) {
+		
+		
+		try {
+			GUI frame = new GUI();
+			
+			
+			frame.go();
+			
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+		}
+			
+		
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public GUI(String userName,String userSeriel) {
-		this.userName = userName;
-		this.userSeriel=userSeriel;
-		timer = new Timer(1000,this);
-		timer.start();
+	
+	
+	
+	
+	public void go(){
+		String[] temp =null;
+		try{
+			Login dialog = new Login(this,false);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setModal(true);
+			dialog.go();
+			dialog.setVisible(true);
+			temp = dialog.getValue();
+			userName = temp[0];
+			userSeriel = temp[1];
+			TIMELIMIT= Integer.parseInt(temp[2]);
+		}catch(Exception ea){
+			
+		}
+		this.setVisible(true);
 		setTitle("U10316036_question");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -60,12 +79,13 @@ public class GUI extends JFrame implements ActionListener{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-		
 		questionNumber = new JLabel("");
 		questionNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(questionNumber);
-		
 		question= new QuestionPanel();
+		question.go();
+		question.setEnabled(true);
+		question.setVisible(true);
 		contentPane.add(question);
 		
 		JPanel result = new JPanel();
@@ -81,7 +101,15 @@ public class GUI extends JFrame implements ActionListener{
 			}
 		});
 		result.add(next);
+		
+		
+		time = TIMELIMIT;
+		timer = new Timer(1000,this);
+		timer.start();
+		
+		
 	}
+	
 	
 	public void actionPerformed(ActionEvent e){
 		time--;
@@ -94,7 +122,7 @@ public class GUI extends JFrame implements ActionListener{
 				System.exit(0);
 			}else{
 				question.repaint();
-				time = 10;
+				time = TIMELIMIT;
 				question.jumpOrNot=false;
 			}
 		}
