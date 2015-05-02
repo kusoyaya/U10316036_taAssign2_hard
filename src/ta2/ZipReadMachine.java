@@ -35,7 +35,7 @@ public class ZipReadMachine extends ReadMachine{
 	        if(entry.getName().equals(filePath)){
 	        	try{
 	        		stream = zipFile.getInputStream(entry);
-	        		Scanner input = new Scanner(stream);
+	        		Scanner input = new Scanner(stream,"UTF-8");
 	        		while(input.hasNextLine()){
 	        			strArray.add(input.nextLine());
 	        		}
@@ -44,7 +44,7 @@ public class ZipReadMachine extends ReadMachine{
 	        		e.printStackTrace();
 	        		stream = this.getClass().getResourceAsStream(filePath);
 	        	}finally{
-	        		Scanner input = new Scanner(stream);
+	        		Scanner input = new Scanner(stream,"UTF-8");
 	        		while(input.hasNextLine()){
 	        			strArray.add(input.nextLine());
 	        		}

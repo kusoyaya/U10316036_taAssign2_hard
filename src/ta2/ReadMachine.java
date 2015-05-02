@@ -17,7 +17,7 @@ public class ReadMachine {
 	public  ArrayList<String> getQuestionArray(String filePath){
 		ArrayList<String> strArray = new ArrayList<String>();
 		InputStream is = this.getClass().getResourceAsStream(filePath);
-		Scanner input = new Scanner(is);
+		Scanner input = new Scanner(is,"UTF-8");
 		while(input.hasNextLine()){
 			strArray.add(input.nextLine());
 		}
