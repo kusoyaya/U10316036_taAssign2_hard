@@ -3,18 +3,29 @@ package ta2;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javafx.stage.FileChooser;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.Dimension;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 public class LoginDialog extends JDialog {
 
@@ -23,7 +34,10 @@ public class LoginDialog extends JDialog {
 	private JTextField serielField;
 	private JLabel timeLabel;
 	private JSlider timeSlider;
-
+	private JLabel zipLabel;
+	private String questionNumber = "10";
+	private String zipPath;
+	private boolean isSelectFile = false,isLoadSuccess = false;
 	
 
 	/**
@@ -33,7 +47,7 @@ public class LoginDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 		
-		setSize(new Dimension(300, 200));
+		setSize(new Dimension(300, 230));
 		setTitle("Wellcome!");
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout());
@@ -74,6 +88,12 @@ public class LoginDialog extends JDialog {
 		timeSlider.setMaximum(30);
 		timeSlider.setToolTipText("");
 		timePad.add(timeSlider);
+		
+		JPanel zipPad = new JPanel();
+		contentPanel.add(zipPad);
+		
+		zipLabel = new JLabel("若沒有載入自訂題庫，將使用預設題庫");
+		zipPad.add(zipLabel);
 			
 		
 		JPanel buttonPane = new JPanel();
@@ -84,7 +104,28 @@ public class LoginDialog extends JDialog {
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				if(isSelectFile){
+					questionNumber = JOptionPane.showInputDialog(okButton, "請輸入題數：", "確認題數", 1);
+					if(ZipReadMachine.isSafe(zipPath, Integer.parseInt(questionNumber))){
+						isLoadSuccess = true;
+						setVisible(false);
+					}else{
+						JOptionPane.showMessageDialog(okButton, "載入題庫錯誤", "錯誤",  2);
+					}
+				}else{
+					setVisible(false);
+				}
+				
+			}
+		});
+		
+		JButton zipButton = new JButton("載入題庫");
+		buttonPane.add(zipButton);
+		zipButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				zipPath = loadFile(contentPanel);
+				isSelectFile = true;
+				zipLabel.setText(zipPath);
 			}
 		});
 		okButton.setActionCommand("OK");
@@ -93,7 +134,7 @@ public class LoginDialog extends JDialog {
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				System.exit(0);;
 			}
 		});
 		cancelButton.setActionCommand("Cancel");
@@ -102,9 +143,32 @@ public class LoginDialog extends JDialog {
 		
 	}
 	
-	public String[] getValue(){
-		String[] s = {nameField.getText(),serielField.getText(),""+timeSlider.getValue()};
+	public ArrayList<String> getValue(){
+		ArrayList<String> s = new ArrayList<String>();
+		s.add(nameField.getText());
+		s.add(serielField.getText());
+		s.add(""+timeSlider.getValue());
+		if(isSelectFile && isLoadSuccess){
+			s.add(zipPath);
+			s.add(questionNumber);
+		}
 		return s;
+	}
+	
+	public String loadFile(JPanel c){
+		String s = "";
+		File selectedFile = null;
+		
+		JFileChooser fileChooser = new JFileChooser();
+		FileFilter filter = new FileNameExtensionFilter("Zip File","zip");
+		fileChooser.setFileFilter(filter);
+		int result = fileChooser.showOpenDialog(c);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			selectedFile = fileChooser.getSelectedFile();
+		}
+		s = selectedFile.getAbsolutePath();
+		
+		return s ;
 	}
 
 }

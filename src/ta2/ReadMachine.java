@@ -14,12 +14,6 @@ import sun.audio.AudioStream;
 
 public class ReadMachine {
 	
-	public static void main(String[] args){
-		ReadMachine a = new ReadMachine();
-		
-		
-	}
-	
 	public  ArrayList<String> getQuestionArray(String filePath){
 		ArrayList<String> strArray = new ArrayList<String>();
 		InputStream is = this.getClass().getResourceAsStream(filePath);

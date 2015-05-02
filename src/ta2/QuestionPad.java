@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
 
 public class QuestionPad extends JPanel {
 	
-	private ReadMachine r = new ReadMachine();
+	private ReadMachine r;
 	private JTextArea text;
 	private JButton buttonA;
 	private JButton buttonB;
@@ -29,11 +29,19 @@ public class QuestionPad extends JPanel {
 	private ArrayList<String> question;
 	int questionNumber =1;
 	double userScore = 0;
+	double correctAddPoint = 10;
 	boolean jumpOrNot = false;
 	/**
 	 * Create the panel.
 	 */
-	public QuestionPad() {
+	public QuestionPad(boolean isZip, String path ,int maxQuestionNumber) {
+		if(isZip){
+			r = new ZipReadMachine(path);
+		}else{
+			r = new ReadMachine();
+		}
+		correctAddPoint = 100.0 / maxQuestionNumber;
+		
 		setSize(new Dimension(800, 400));
 		setLayout(new BorderLayout(0, 0));
 		
@@ -60,7 +68,7 @@ public class QuestionPad extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(question.get(question.size()-1).equals("A")){
 					r.playSound(true);
-					userScore += 10;
+					userScore += correctAddPoint;
 					JOptionPane.showMessageDialog(buttonA, "正確","恭喜啦！",JOptionPane.PLAIN_MESSAGE);
 				}else{
 					r.playSound(false);
@@ -76,7 +84,7 @@ public class QuestionPad extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(question.get(question.size()-1).equals("B")){
 					r.playSound(true);
-					userScore += 10;
+					userScore += correctAddPoint;
 					JOptionPane.showMessageDialog(buttonB, "正確","恭喜啦！",JOptionPane.PLAIN_MESSAGE);
 				}else{
 					r.playSound(false);
@@ -92,7 +100,7 @@ public class QuestionPad extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(question.get(question.size()-1).equals("C")){
 					r.playSound(true);
-					userScore += 10;
+					userScore += correctAddPoint;
 					JOptionPane.showMessageDialog(buttonC, "正確","恭喜啦！",JOptionPane.PLAIN_MESSAGE);
 				}else{
 					r.playSound(false);
@@ -108,7 +116,7 @@ public class QuestionPad extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(question.get(question.size()-1).equals("D")){
 					r.playSound(true);
-					userScore += 10;
+					userScore += correctAddPoint;
 					JOptionPane.showMessageDialog(buttonD, "正確","恭喜啦！",JOptionPane.PLAIN_MESSAGE);
 				}else{
 					r.playSound(false);
